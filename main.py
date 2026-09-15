@@ -129,16 +129,21 @@ def main(page: ft.Page):
 import os
 
 # ... resto das importações ...
+import os
+import flet as ft
+
+# ... todo o resto do código continua IGUAL ...
 
 if __name__ == "__main__":
     init_firebase()
 
-    # Usa a porta que o Render definir, ou 8080 localmente
+    # ✅ Usa a porta que o Render exige + bind no 0.0.0.0
     porta = int(os.getenv("PORT", 8080))
 
     ft.app(
         target=main,
         view=ft.AppView.WEB_BROWSER,
-        port=porta,
+        host="0.0.0.0",  # 👈 ESSA LINHA ESTAVA FALTANDO!
+        port=porta,  # 👈 Usa a porta do Render
         assets_dir="assets"
     )
