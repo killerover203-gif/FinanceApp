@@ -1,0 +1,6 @@
+serviceAccountKey.json 
+data/ 
+*.db 
+__pycache__/ 
+dist/ 
+build/ 

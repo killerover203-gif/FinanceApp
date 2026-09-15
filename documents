@@ -1,0 +1,23 @@
+financas_pessoais/
+│
+├── main.py                  # Ponto de entrada (inicia o Flet)
+├── config.py                # Configurações globais (caminho do banco, etc)
+│
+├── database/                # Camada de Dados
+│   ├── __init__.py
+│   ├── connection.py        # Conexão e criação de tabelas SQLite
+│   └── repositories.py      # Operações CRUD (Inserir, Listar, Deletar)
+│
+├── models/                  # Entidades do Domínio
+│   ├── __init__.py
+│   └── entities.py          # Dataclasses (Transacao, Categoria)
+│
+├── services/                # Camada de Lógica (Backend)
+│   ├── __init__.py
+│   └── finance_service.py   # Regras de negócio (ex: validar saldo, somar totais)
+│
+└── views/                   # Camada de Apresentação (Frontend/Flet)
+    ├── __init__.py
+    ├── main_view.py         # Layout principal (Sidebar + Conteúdo)
+    ├── dashboard_view.py    # Tela de resumo financeiro
+    └── transactions_view.py # Tela de listar/adicionar transações

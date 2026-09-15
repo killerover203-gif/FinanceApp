@@ -1,0 +1,30 @@
+[project]
+name = "financeapp"
+version = "1.0.0"
+description = "App de finanças pessoais"
+requires-python = ">=3.8"
+
+[tool.flet]
+# Informações do app
+product = "FinanceApp"
+company = "Seu Nome"
+copyright = "Copyright 2026"
+
+# Configurações gerais
+app_name = "FinanceApp"
+app_description = "Gerencie suas finanças pessoais"
+
+# ✅ ÍCONE DO APP (caminho relativo ao pyproject.toml)
+icon = "assets/icon.ico"
+
+# Orientação (para mobile)
+orientation = "portrait-primary"
+
+# Cores do splash screen
+splash_bg_color = "#2E7D5B"
+
+[tool.flet.windows]
+company_name = "Seu Nome"
+
+[tool.flet.android]
+adaptive_icon_background = "#2E7D5B"
