@@ -138,7 +138,7 @@ if __name__ == "__main__":
     init_firebase()
 
     # ✅ Usa a porta que o Render exige + bind no 0.0.0.0
-    porta = int(os.getenv("PORT", 8080))
+    porta = int(os.getenv("PORT", 10000))
 
     ft.app(
         target=main,
