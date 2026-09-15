@@ -126,6 +126,19 @@ def main(page: ft.Page):
     FinanceApp(page)
 
 
+import os
+
+# ... resto das importações ...
+
 if __name__ == "__main__":
-    log("🚀 __main__ executando")
-    ft.run(main, assets_dir="assets")
+    init_firebase()
+
+    # Usa a porta que o Render definir, ou 8080 localmente
+    porta = int(os.getenv("PORT", 8080))
+
+    ft.app(
+        target=main,
+        view=ft.AppView.WEB_BROWSER,
+        port=porta,
+        assets_dir="assets"
+    )

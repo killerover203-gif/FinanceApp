@@ -76,3 +76,7 @@ def inicializar_firebase():
 # Mantive a função init_firebase() para não quebrar o main.py
 def init_firebase():
     return inicializar_firebase()
+
+
+# Alias para compatibilidade com o resto do código
+get_db = inicializar_firebase

@@ -3,4 +3,4 @@ data/
 *.db 
 __pycache__/ 
 dist/ 
-build/ 
+build/
