@@ -15,30 +15,31 @@ def inicializar_firebase():
     # ──────────────────────────────────────────────────────
     # 🌐 AMBIENTE NA NUVEM (Render)
     # ──────────────────────────────────────────────────────
-    if os.getenv("FIREBASE_PROJECT_ID"):
-        log("☁️ Ambiente de nuvem detectado — usando variáveis de ambiente")
+    # 🌐 AMBIENTE NA NUVEM (Render) — verifica se TEM as variáveis
+    firebase_project_id = os.getenv("FIREBASE_PROJECT_ID")
+    if firebase_project_id and firebase_project_id.strip() != "":
+        log(f"☁️ Ambiente de nuvem detectado — Projeto: {firebase_project_id}")
 
         firebase_config = {
-            "type": os.getenv("FIREBASE_TYPE"),
-            "project_id": os.getenv("FIREBASE_PROJECT_ID"),
-            "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID"),
+            "type": os.getenv("FIREBASE_TYPE", "service_account"),
+            "project_id": firebase_project_id,
+            "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID", ""),
             "private_key": os.getenv("FIREBASE_PRIVATE_KEY", "").replace("\\n", "\n"),
-            "client_email": os.getenv("FIREBASE_CLIENT_EMAIL"),
-            "client_id": os.getenv("FIREBASE_CLIENT_ID"),
+            "client_email": os.getenv("FIREBASE_CLIENT_EMAIL", ""),
+            "client_id": os.getenv("FIREBASE_CLIENT_ID", ""),
             "auth_uri": os.getenv("FIREBASE_AUTH_URI", "https://accounts.google.com/o/oauth2/auth"),
             "token_uri": os.getenv("FIREBASE_TOKEN_URI", "https://oauth2.googleapis.com/token"),
-            "auth_provider_x509_cert_url": os.getenv("FIREBASE_CERT_URL",
+            "auth_provider_x509_cert_url": os.getenv("FIREBASE_AUTH_PROVIDER_X509_CERT_URL",
                                                      "https://www.googleapis.com/oauth2/v1/certs"),
-            "client_x509_cert_url": os.getenv("FIREBASE_CLIENT_CERT_URL"),
+            "client_x509_cert_url": os.getenv("FIREBASE_CLIENT_X509_CERT_URL", ""),
         }
 
         cred = credentials.Certificate(firebase_config)
 
-    # ──────────────────────────────────────────────────────
-    # 💻 AMBIENTE LOCAL (seu computador) — IGUALZINHO ANTES!
-    # ──────────────────────────────────────────────────────
+    # 💻 AMBIENTE LOCAL (seu PC)
     else:
         log("💻 Ambiente local detectado — buscando serviceAccountKey.json")
+        # ... resto do código local continua IGUAL ...
 
         # Procura a chave nos mesmos locais de antes
         caminhos = [
