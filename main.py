@@ -134,16 +134,16 @@ import flet as ft
 
 # ... todo o resto do código continua IGUAL ...
 
+# ✅ ISSO ESTÁ CERTO na versão 0.86.5:
 if __name__ == "__main__":
     init_firebase()
 
-    # ✅ Usa a porta que o Render exige + bind no 0.0.0.0
     porta = int(os.getenv("PORT", 10000))
 
-    ft.app(
-        target=main,
+    ft.run(
+        main,
         view=ft.AppView.WEB_BROWSER,
-        host="0.0.0.0",  # 👈 ESSA LINHA ESTAVA FALTANDO!
-        port=porta,  # 👈 Usa a porta do Render
+        host="0.0.0.0",
+        port=porta,
         assets_dir="assets"
     )
