@@ -1,5 +1,4 @@
 flet==0.86.5
-flet-web==0.86.5
-firebase-admin>=6.5.0
-python-dateutil>=2.8.0
+firebase-admin==7.5.0
+python-dateutil==2.9.0.post0
 flet-charts>=0.2.0
