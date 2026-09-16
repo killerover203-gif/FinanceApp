@@ -78,37 +78,39 @@ def inicializar_firebase():
     # ──────────────────────────────────────────────────────
     # ✅ CATEGORIAS PADRÃO — IGUAIS AO SQLite ANTIGO!
     # ──────────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────────
+    # ✅ GARANTE que as CATEGORIAS PADRÃO EXISTAM
+    # ──────────────────────────────────────────────────────
     db = firestore.client()
     log("✅ Firebase conectado com SUCESSO! 🎉")
 
     try:
         categorias_ref = db.collection("categorias")
-        docs = list(categorias_ref.limit(1).stream())
+        docs = list(categorias_ref.stream())
 
+        # Lista DEFINITIVA das categorias PADRÃO
+        categorias_padrao = [
+            {"nome": "Alimentação", "icone": "RESTAURANT", "tipo": "despesa"},
+            {"nome": "Transporte", "icone": "DIRECTIONS_CAR", "tipo": "despesa"},
+            {"nome": "Moradia", "icone": "HOME", "tipo": "despesa"},
+            {"nome": "Lazer", "icone": "SPORTS_ESPORTS", "tipo": "despesa"},
+            {"nome": "Saúde", "icone": "LOCAL_HOSPITAL", "tipo": "despesa"},
+            {"nome": "Educação", "icone": "SCHOOL", "tipo": "despesa"},
+            {"nome": "Salário", "icone": "WORK", "tipo": "receita"},
+            {"nome": "Investimentos", "icone": "TRENDING_UP", "tipo": "receita"},
+        ]
+
+        # Se não tem NENHUMA categoria → CRIA TODAS
         if len(docs) == 0:
-            log("📂 Banco VAZIO! Criando categorias PADRÃO...")
-
-            categorias_padrao = [
-                {"nome": "Alimentação", "icone": "RESTAURANT", "tipo": "despesa"},
-                {"nome": "Transporte", "icone": "DIRECTIONS_CAR", "tipo": "despesa"},
-                {"nome": "Moradia", "icone": "HOME", "tipo": "despesa"},
-                {"nome": "Lazer", "icone": "SPORTS_ESPORTS", "tipo": "despesa"},
-                {"nome": "Saúde", "icone": "LOCAL_HOSPITAL", "tipo": "despesa"},
-                {"nome": "Educação", "icone": "SCHOOL", "tipo": "despesa"},
-                {"nome": "Salário", "icone": "WORK", "tipo": "receita"},
-                {"nome": "Investimentos", "icone": "TRENDING_UP", "tipo": "receita"},
-            ]
-
+            log("📂 Nenhuma categoria encontrada! Criando PADRÃO...")
             for cat in categorias_padrao:
                 categorias_ref.document().set(cat)
-
-            log("✅ Categorias PADRÃO criadas com SUCESSO! 🎉")
+            log("✅ 8 Categorias PADRÃO criadas com SUCESSO! 🎉")
         else:
-            log("✅ Categorias já existem — mantendo!")
+            log(f"✅ Já existem {len(docs)} categorias — mantendo!")
 
     except Exception as e:
         log(f"⚠️ Erro ao verificar/criar categorias: {e}")
-
 
     return db
 
