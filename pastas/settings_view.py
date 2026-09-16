@@ -160,7 +160,7 @@ class SettingsView(ft.Column):
                 ),
             ], tight=True, spacing=0),
             actions=[
-                ft.FilledButton(
+                ft.ElevatedButton(
                     "Entendi!",
                     icon=ft.Icons.THUMB_UP,
                     on_click=lambda e: self._fechar_dialog(dialog),

@@ -76,7 +76,7 @@ class ContasView(ft.Column):
                         self.dropdown_categoria,
                     ], spacing=10, wrap=True),
                     ft.Row([
-                        ft.FilledButton(
+                        ft.ElevatedButton(
                             "Adicionar Conta",
                             icon=ft.Icons.ADD_CIRCLE,
                             on_click=self._salvar_conta,
