@@ -139,7 +139,7 @@ class TransactionsView(ft.Column):
             self.container_categorias,
 
             ft.Row([
-                ft.ElevatedButton(
+                ft.FilledButton(
                     "Adicionar",
                     icon=ft.Icons.ADD_CIRCLE,
                     on_click=self._salvar_transacao,
@@ -307,7 +307,7 @@ class TransactionsView(ft.Column):
                     "Cancelar",
                     on_click=lambda e: self._fechar_dialog(dialog),
                 ),
-                ft.ElevatedButton(
+                ft.FilledButton(
                     "Criar",
                     icon=ft.Icons.CHECK,
                     on_click=salvar_categoria,

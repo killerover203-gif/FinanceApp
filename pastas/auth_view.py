@@ -102,7 +102,7 @@ class AuthView:
                     style=ft.ButtonStyle(color=self.cor_primaria)
                 ),
                 ft.Container(height=20),
-                ft.ElevatedButton(
+                ft.FilledButton(
                     "ENTRAR", width=largura_botao,
                     bgcolor=self.cor_primaria,
                     color=self.cor_texto_botao,
@@ -158,7 +158,7 @@ class AuthView:
                         size=9, color=self.cor_texto_claro, italic=True),
                 self.txt_erro_registro,
                 ft.Container(height=15),
-                ft.ElevatedButton(
+                ft.FilledButton(
                     "CADASTRAR", width=largura_botao,
                     bgcolor=self.cor_primaria,
                     color=self.cor_texto_botao,
@@ -369,7 +369,7 @@ class AuthView:
 
             dialog.actions = [
                 ft.TextButton("Cancelar", on_click=lambda e: fechar()),
-                ft.ElevatedButton(
+                ft.FilledButton(
                     "Verificar",
                     icon=ft.Icons.CHECK,
                     on_click=lambda e: verificar_resposta(),
@@ -415,7 +415,7 @@ class AuthView:
             ], tight=True, spacing=0),
             actions=[
                 ft.TextButton("Cancelar", on_click=lambda e: fechar()),
-                ft.ElevatedButton(
+                ft.FilledButton(
                     "Verificar",
                     icon=ft.Icons.SEARCH,
                     on_click=verificar_email,
@@ -482,7 +482,7 @@ class AuthView:
             ], tight=True, spacing=0),
             actions=[
                 ft.TextButton("Cancelar", on_click=lambda e: fechar()),
-                ft.ElevatedButton(
+                ft.FilledButton(
                     "Salvar",
                     icon=ft.Icons.SAVE,
                     on_click=lambda e: salvar(),
