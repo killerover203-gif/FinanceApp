@@ -1,5 +1,4 @@
 import os
-import sys
 from pathlib import Path
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -8,21 +7,23 @@ from utils.logger import log
 
 def inicializar_firebase():
     """
-    🌐 Se estiver na nuvem (Render): lê das variáveis de ambiente
-    💻 Se estiver no PC: lê do arquivo serviceAccountKey.json (IGUAL ANTES!)
+    🌐 Render → usa variáveis de ambiente
+    💻 PC → usa arquivo serviceAccountKey.json
     """
 
     # ──────────────────────────────────────────────────────
     # 🌐 AMBIENTE NA NUVEM (Render)
     # ──────────────────────────────────────────────────────
-    # 🌐 AMBIENTE NA NUVEM (Render) — verifica se TEM as variáveis
-    firebase_project_id = os.getenv("FIREBASE_PROJECT_ID")
-    if firebase_project_id and firebase_project_id.strip() != "":
-        log(f"☁️ Ambiente de nuvem detectado — Projeto: {firebase_project_id}")
+    # Verifica de forma GARANTIDA se TEM as variáveis
+    tipo = os.getenv("FIREBASE_TYPE")
+    projeto_id = os.getenv("FIREBASE_PROJECT_ID")
+
+    if tipo and projeto_id:
+        log("☁️ AMBIENTE DE NUVEM DETECTADO — usando variáveis do Render")
 
         firebase_config = {
-            "type": os.getenv("FIREBASE_TYPE", "service_account"),
-            "project_id": firebase_project_id,
+            "type": tipo,
+            "project_id": projeto_id,
             "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID", ""),
             "private_key": os.getenv("FIREBASE_PRIVATE_KEY", "").replace("\\n", "\n"),
             "client_email": os.getenv("FIREBASE_CLIENT_EMAIL", ""),
@@ -36,16 +37,15 @@ def inicializar_firebase():
 
         cred = credentials.Certificate(firebase_config)
 
+    # ──────────────────────────────────────────────────────
     # 💻 AMBIENTE LOCAL (seu PC)
+    # ──────────────────────────────────────────────────────
     else:
-        log("💻 Ambiente local detectado — buscando serviceAccountKey.json")
-        # ... resto do código local continua IGUAL ...
+        log("💻 AMBIENTE LOCAL — buscando serviceAccountKey.json")
 
-        # Procura a chave nos mesmos locais de antes
         caminhos = [
             Path(__file__).parent.parent / "serviceAccountKey.json",
             Path.cwd() / "serviceAccountKey.json",
-            Path(__file__).parent.parent / "config" / "serviceAccountKey.json",
         ]
 
         caminho_chave = None
@@ -60,24 +60,23 @@ def inicializar_firebase():
                 "Coloque na pasta raiz do projeto."
             )
 
-        log(f"🔑 Chave encontrada em: {caminho_chave}")
+        log(f"🔑 Chave encontrada: {caminho_chave}")
         cred = credentials.Certificate(str(caminho_chave))
 
     # ──────────────────────────────────────────────────────
-    # 🔌 Inicializa a conexão
+    # 🔌 Inicializar
     # ──────────────────────────────────────────────────────
     if not firebase_admin._apps:
         firebase_admin.initialize_app(cred)
 
     db = firestore.client()
-    log("✅ Firebase inicializado com sucesso!")
+    log("✅ Firebase conectado com SUCESSO!")
     return db
 
 
-# Mantive a função init_firebase() para não quebrar o main.py
+# Compatibilidade com o resto do código
 def init_firebase():
     return inicializar_firebase()
 
 
-# Alias para compatibilidade com o resto do código
 get_db = inicializar_firebase
