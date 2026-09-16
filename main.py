@@ -138,12 +138,14 @@ import flet as ft
 if __name__ == "__main__":
     init_firebase()
 
-    porta = int(os.getenv("PORT", 10000))
+    import os
+
+    porta = int(os.getenv("PORT", 10000))  # ✅ SEMPRE 10000
 
     ft.run(
         main,
         view=ft.AppView.WEB_BROWSER,
         host="0.0.0.0",
-        port=porta,
+        port=porta,  # ✅ Força a porta!
         assets_dir="assets"
     )
