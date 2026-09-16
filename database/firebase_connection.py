@@ -7,41 +7,45 @@ from utils.logger import log
 
 def inicializar_firebase():
     """
-    🌐 Render → usa variáveis de ambiente
-    💻 PC → usa arquivo serviceAccountKey.json
+    🌐 Render → lê das variáveis de ambiente (DETECÇÃO FORÇADA)
+    💻 PC → lê do arquivo serviceAccountKey.json
     """
 
     # ──────────────────────────────────────────────────────
-    # 🌐 AMBIENTE NA NUVEM (Render)
+    # 🌐 DETECTAÇÃO — se estamos no Render, TEM variáveis
     # ──────────────────────────────────────────────────────
-    # Verifica de forma GARANTIDA se TEM as variáveis
-    tipo = os.getenv("FIREBASE_TYPE")
     projeto_id = os.getenv("FIREBASE_PROJECT_ID")
 
-    if tipo and projeto_id:
-        log("☁️ AMBIENTE DE NUVEM DETECTADO — usando variáveis do Render")
+    # ✅ SE EXISTIR projeto_id = ESTAMOS NO RENDER
+    if projeto_id and len(projeto_id.strip()) > 0:
+        log("☁️ RENDER DETECTADO — Usando variáveis de ambiente")
 
-        firebase_config = {
-            "type": tipo,
-            "project_id": projeto_id,
-            "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID", ""),
-            "private_key": os.getenv("FIREBASE_PRIVATE_KEY", "").replace("\\n", "\n"),
-            "client_email": os.getenv("FIREBASE_CLIENT_EMAIL", ""),
-            "client_id": os.getenv("FIREBASE_CLIENT_ID", ""),
+        # Monta a configuração
+        config = {
+            "type": os.getenv("FIREBASE_TYPE", "service_account"),
+            "project_id": projeto_id.strip(),
+            "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID", "").strip(),
+            "private_key": os.getenv("FIREBASE_PRIVATE_KEY", "").replace("\\n", "\n").strip(),
+            "client_email": os.getenv("FIREBASE_CLIENT_EMAIL", "").strip(),
+            "client_id": os.getenv("FIREBASE_CLIENT_ID", "").strip(),
             "auth_uri": os.getenv("FIREBASE_AUTH_URI", "https://accounts.google.com/o/oauth2/auth"),
             "token_uri": os.getenv("FIREBASE_TOKEN_URI", "https://oauth2.googleapis.com/token"),
             "auth_provider_x509_cert_url": os.getenv("FIREBASE_AUTH_PROVIDER_X509_CERT_URL",
                                                      "https://www.googleapis.com/oauth2/v1/certs"),
-            "client_x509_cert_url": os.getenv("FIREBASE_CLIENT_X509_CERT_URL", ""),
+            "client_x509_cert_url": os.getenv("FIREBASE_CLIENT_X509_CERT_URL", "").strip(),
         }
 
-        cred = credentials.Certificate(firebase_config)
+        log(f"✅ Projeto: {config['project_id']}")
+        log(f"✅ Email: {config['client_email']}")
+        log(f"✅ Chave privada: {'PRESENTE' if config['private_key'] else 'FALTANDO!'}")
+
+        cred = credentials.Certificate(config)
 
     # ──────────────────────────────────────────────────────
-    # 💻 AMBIENTE LOCAL (seu PC)
+    # 💻 AMBIENTE LOCAL
     # ──────────────────────────────────────────────────────
     else:
-        log("💻 AMBIENTE LOCAL — buscando serviceAccountKey.json")
+        log("💻 AMBIENTE LOCAL — Buscando serviceAccountKey.json")
 
         caminhos = [
             Path(__file__).parent.parent / "serviceAccountKey.json",
@@ -64,17 +68,16 @@ def inicializar_firebase():
         cred = credentials.Certificate(str(caminho_chave))
 
     # ──────────────────────────────────────────────────────
-    # 🔌 Inicializar
+    # 🔌 Conectar
     # ──────────────────────────────────────────────────────
     if not firebase_admin._apps:
         firebase_admin.initialize_app(cred)
 
     db = firestore.client()
-    log("✅ Firebase conectado com SUCESSO!")
+    log("✅ FIREBASE CONECTADO COM SUCESSO! 🎉")
     return db
 
 
-# Compatibilidade com o resto do código
 def init_firebase():
     return inicializar_firebase()
 
